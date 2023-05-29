@@ -17,9 +17,14 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.name} ({self.email})'
 
+    def admin_name(self):
+        *first, last = self.name.split()
+        first = ' '.join(first)
+        return f'{last}, {first} ({self.email})'
+
 
 class Purchase(models.Model):
-    customer = models.ForeignKey(Customer, related_name='purchases')
+    customer = models.ForeignKey(Customer, related_name='purchases', on_delete=models.CASCADE)
     placed_at = models.DateTimeField(default=timezone.now)
     shipped_at = models.DateTimeField(blank=True, null=True)
     discount_code = models.CharField(blank=True, default='', max_length=20)
@@ -27,8 +32,14 @@ class Purchase(models.Model):
     shipped = models.BooleanField(default=False)
     items = models.ManyToManyField('products.Product', through='PurchaseItem')
 
+    def __str__(self):
+        return f'{self.customer.name}'
+
 
 class PurchaseItem(models.Model):
-    product = models.ForeignKey('products.Product')
-    purchase = models.ForeignKey(Purchase)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f'{self.product.name} ({self.quantity})'

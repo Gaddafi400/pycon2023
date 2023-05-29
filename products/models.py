@@ -27,7 +27,7 @@ def _image_upload(instance, filename):
 
 
 class Image(models.Model):
-    product = models.ForeignKey(Product, related_name='images')
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=1)
     image = models.ImageField(upload_to=_image_upload)
 
