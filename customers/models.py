@@ -25,7 +25,7 @@ class Customer(models.Model):
 
 class Purchase(models.Model):
     customer = models.ForeignKey(Customer, related_name='purchases', on_delete=models.CASCADE)
-    placed_at = models.DateTimeField(default=timezone.now)
+    placed_at = models.DateTimeField('placed', default=timezone.now)
     shipped_at = models.DateTimeField(blank=True, null=True)
     discount_code = models.CharField(blank=True, default='', max_length=20)
     total = models.DecimalField(max_digits=9, decimal_places=2)
@@ -43,3 +43,11 @@ class PurchaseItem(models.Model):
 
     def __str__(self):
         return f'{self.product.name} ({self.quantity})'
+
+
+class PurchaseSummary(PurchaseItem):
+    class Meta:
+        proxy = True
+        verbose_name = 'purchase summary'
+        verbose_name_plural = 'purchase summarise'
+

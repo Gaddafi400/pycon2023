@@ -1,0 +1,48 @@
+{% extends 'admin/change_list.html' %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'customers/css/main.css' %}">
+{% endblock extrahead %}
+
+
+{% block result_list %}
+    <table class="results">
+        <thead>
+        <tr>
+            <th scope="col" class="header column-product_name">Product Name</th>
+            <th scope="col" class="column-total">Total Quantity</th>
+            <th scope="col" class="column-total_sale">Total Sale</th>
+            <th scope="col" class="column-graph">Graph</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in summary %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td>{{ item.product__name }}</td>
+                <td>{{ item.total }}</td>
+                <td>${{ item.total_sale }}</td>
+                <td>
+                    <div class="bar-graph">
+                        <div class="bar-graph-fill" style="width: {{ item.total }}%;"></div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr class="row-total">
+            <td colspan="4" class="total_price"><b>Total</b></td>
+        </tr>
+        <tr class="row-total">
+            <td></td>
+            <td class="total_price"><b>{{ summary_total.total }}</b></td>
+            <td class="total_price"><b>${{ summary_total.total_sale }}</b></td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock result_list %}
+
+

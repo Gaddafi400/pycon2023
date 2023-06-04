@@ -1,5 +1,12 @@
 from django.db import models
 from django.urls import reverse
+from image_cropping import ImageRatioField
+
+FEATURED = (
+    (0, 'No'),
+    (1, 'Everywhere'),
+    (2, 'Category')
+)
 
 
 class Product(models.Model):
@@ -11,6 +18,7 @@ class Product(models.Model):
     serial_number = models.CharField(max_length=40, unique=True)
     quantity = models.IntegerField()
     categories = models.ManyToManyField('Category')
+    featured = models.IntegerField(choices=FEATURED, default=0)
 
     class Meta:
         ordering = ['name']
@@ -30,6 +38,7 @@ class Image(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=1)
     image = models.ImageField(upload_to=_image_upload)
+    cropping = ImageRatioField('image', '430x360')
 
     class Meta:
         ordering = ['order']
@@ -44,6 +53,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'categories'
 
     def __str__(self):
         return self.name

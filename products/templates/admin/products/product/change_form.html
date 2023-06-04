@@ -1,0 +1,21 @@
+{% extends 'admin/change_form.html' %}
+
+
+{% block content %}
+    {# https://blog.devgenius.io/best-free-wysiwyg-editor-python-django-admin-panel-integration-d9cb30da1dba #}
+    <h1 style="border: 1px solid red">Enjoy our new WYSIWYG editor!</h1>
+    {{ block.super }}
+{% endblock content %}
+
+
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+    <script>
+        // Custom JavaScript code here
+        // Example: Display an alert when the change form is ready
+        $(document).ready(function () {
+            alert("Change form is ready!");
+        });
+    </script>
+{% endblock admin_change_form_document_ready %}
